@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devices</title>
+    <link rel="stylesheet" type="text/css" href="/css/deviceStyle.css">
+</head>
+
+<body>
+    <section class="products">
+        <h2>Devices</h2>
+        <div class="all-products">
+            <% listDevice.forEach ( function(device) { %>
+                <div class="product">
+                    <img src="/assets/waterpump.png">
+                    <div class="product-info">
+                        <h4 class="product-title">
+                            <%= device.device_name %>
+                                <%= device.garden_id %>
+                        </h4>
+                        <div class="func-btn">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                            <a class="product-btn"
+                                href="/api/v1/garden/<%= device.garden_id %>/device/schedule/<%= device.device_id %>">Schedule</a>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+                    <!-- <div class="product">
+                        <img src="/assets/waterpump.png">
+                        <div class="product-info">
+                            <h4 class="product-title">Pump 2</h4>
+                            <div class="func-btn">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                                <a class="product-btn" href="#">Schedule</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="product">
+                        <img src="/assets/waterpump.png">
+                        <div class="product-info">
+                            <h4 class="product-title">Pump 3</h4>
+                            <div class="func-btn">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                                <a class="product-btn" href="#">Schedule</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="product">
+                        <img src="/assets/waterpump.png">
+                        <div class="product-info">
+                            <h4 class="product-title">Pump 4</h4>
+                            <div class="func-btn">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                                <a class="product-btn" href="#">Schedule</a>
+                            </div>
+
+                        </div>
+                    </div> -->
+        </div>
+    </section>
+
+</body>
+
+</html>

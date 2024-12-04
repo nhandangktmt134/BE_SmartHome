@@ -1,0 +1,60 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Garden</title>
+</head>
+
+<body>
+  <h1>
+    Gardens
+  </h1>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Garden Id</th>
+          <th>Garden Name</th>
+          <th>Number of device</th>
+          <th>Number of sensor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% listGarden.forEach( function(garden) { %>
+          <tr>
+            <td data-title='Garden Id'>
+              <%= garden.gardenId %>
+            </td>
+            <td data-title='Garden Name'>
+              <%= garden.gardenName %>
+            </td>
+            <td data-title='Number of device'>
+              <%= garden.deviceNum %>
+            </td>
+            <td data-title='Number of sensor'>
+              <%= garden.sensorNum %>
+            </td>
+            <td class='select'>
+              <a class='button' href='/api/v1/garden/<%= garden.gardenId %>'>Select</a>
+            </td>
+          </tr>
+          <% }); %>
+            <!-- <tr>
+              <td data-title='Garden Id'>SUNFLOWER_0001</td>
+              <td data-title='Garden Name'>Sunflower Garden</td>
+              <td data-title='Number of device'>4</td>
+              <td data-title='Number of sensor'>4</td>
+              <td class='select'>
+                <a class='button' href='#'>Select</a>
+              </td>
+            </tr> -->
+      </tbody>
+    </table>
+  </main>
+
+</body>
+
+</html>

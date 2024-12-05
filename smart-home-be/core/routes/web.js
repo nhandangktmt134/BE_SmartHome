@@ -5,6 +5,8 @@ const {
   viewRoom,
   viewLight,
   viewFan,
+  displayAllRoomsArlam,
+  displayAllRoomsArlamforrom
 } = require("../controllers/roomController");
 const { displayDataTable, displayDatabyDate } = require("../controllers/sensorDataController");
 const {
@@ -20,7 +22,9 @@ const { getArlamRoomid, checkTimeAndUpdateNote } = require("../controllers/Arlam
 
 const initWebRoutes = (app) => {
   //
-  router.get("/api/v1/notice",getArlamRoomid);
+  router.get("/api/v1/notice",  displayAllRoomsArlam );
+  router.get("/api/v1/:room_id/notice",  displayAllRoomsArlamforrom );
+
   router.get("/api/v1/checknotice",checkTimeAndUpdateNote);
   router.get("/api/v1/room", displayAllRooms);
   router.get("/api/v1/:room_id", viewRoom);

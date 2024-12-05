@@ -8,7 +8,7 @@ const getArlamRoomid = async (req, res) => {
     // return res.render('displayAllRooms.ejs', { listGarden: listGarden });
 };
 const getAllArlamRoom = async () => {
-    const { data, error } = await supabase.from("room").select();
+    const { data, error } = await supabase.from("schedule").select('*');
     if (error) {
       return error;
     }

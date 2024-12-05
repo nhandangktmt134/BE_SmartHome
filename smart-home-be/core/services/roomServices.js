@@ -7,7 +7,38 @@ const getAllRoom = async () => {
   }
   return data;
 };
-
+const ArlamInfo = async()=>{
+  const { data, error } = await supabase.from("schedule").select("*");
+  if (error) {
+    return error;
+  }
+  return data;
+}
+const ArlamInfoforroom = async(room_id)=>{
+  const { data, error } = await supabase
+  .from("schedule")
+  .select()
+  .eq("name", room_id)  
+  .eq('note', 'FAlSE')
+  ;
+  if (error) {
+    return error;
+  }
+  return data;
+}
+const getArlamInfo = async (room_id) => {
+  const { data, error } = await supabase
+    .from("temp_value")
+    .select("created_at, room_id, value, unit")
+    .limit(1)
+    // .eq("sensor.room_id", room_id)
+    // .like("sensor_id", "%temp%")
+    .order("created_at", { ascending: false });
+  if (error) {
+    return error;
+  }
+  return data;
+};
 const getNumLightActive = async() => {
   const { data, error } = await supabase
   .from('device')
@@ -91,6 +122,7 @@ const getLastLight = async (room_id) => {
   return data;
 };
 
+
 module.exports = {
   getAllRoom,
   getRoomById,
@@ -99,4 +131,6 @@ module.exports = {
   getLastLight,
   getNumLightActive,
   getNumFanActive,
+  ArlamInfo,
+  ArlamInfoforroom,
 };

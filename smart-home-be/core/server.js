@@ -27,6 +27,7 @@ configViewEngine(app);
 
 initWebRoutes(app);
 // console.log(supabase)
+
 startScheduler(); // Gọi hàm khởi động lập lịch từ controller
 
 app.listen(port, () => {

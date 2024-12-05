@@ -115,7 +115,6 @@ const executeScheduledTask = (task) => {
 };
 
 // Khởi động lịch
-startScheduler();
 module.exports = {
   displayAllRooms,
   viewRoom,

@@ -23,15 +23,15 @@ const { getArlamRoomid, checkTimeAndUpdateNote } = require("../controllers/Arlam
 
 const initWebRoutes = (app) => {
   //
-  router.get("/api/v1/notice",  displayAllRoomsArlam );
-  router.get("/api/v1/:room_id/Arlamfirst",  viewgetArlam );
+  router.get("/api/v1/notice", displayAllRoomsArlam);
+  // router.get("/api/v1/:room_id/Arlamfirst",  viewgetArlam );
 
-  router.get("/api/v1/:room_id/notice",  displayAllRoomsArlamforrom );
+  router.get("/api/v1/:room_id/notice", displayAllRoomsArlamforrom);
 
-  router.get("/api/v1/checknotice",checkTimeAndUpdateNote);
+  router.get("/api/v1/checknotice", checkTimeAndUpdateNote);
   router.get("/api/v1/room", displayAllRooms);
   router.get("/api/v1/:room_id", viewRoom);
-  
+
   router.get("/api/v1/:room_id/data-table", displayDataTable);
   router.get("/api/v1/:room_id/device", viewDevice);
   router.get("/api/v1/:room_id/data-value/:date", displayDatabyDate);

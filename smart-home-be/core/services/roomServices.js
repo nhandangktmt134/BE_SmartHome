@@ -40,14 +40,15 @@ const ArlamInfoforroom = async (room_id) => {
   }
   return data;
 }
-const getArlamInfo = async (room_id) => {
+const getActionArlam = async (room_id) => {
   const { data, error } = await supabase
-    .from("temp_value")
-    .select("created_at, room_id, value, unit")
+    .from("schedule")
+    .select("name,device,status,time")
     .limit(1)
     // .eq("sensor.room_id", room_id)
-    // .like("sensor_id", "%temp%")
-    .order("created_at", { ascending: false });
+    // .like("sensor_id", "%temp%")  
+    .eq("name", room_id)
+    .order("time", { ascending: true });
   if (error) {
     return error;
   }

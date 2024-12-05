@@ -7,20 +7,34 @@ const getAllRoom = async () => {
   }
   return data;
 };
-const ArlamInfo = async()=>{
+const ArlamInfo = async () => {
   const { data, error } = await supabase.from("schedule").select("*");
   if (error) {
     return error;
   }
   return data;
 }
-const ArlamInfoforroom = async(room_id)=>{
+
+const getScheduledTasks = async () => {
   const { data, error } = await supabase
-  .from("schedule")
-  .select()
-  .eq("name", room_id)  
-  .eq('note', 'FAlSE')
-  ;
+    .from("schedule")
+    .select("*")
+    .eq("status", 1); // Lọc theo trạng thái
+
+  if (error) {
+    console.error('Error fetching scheduled tasks:', error);
+    return null; // Hoặc xử lý lỗi theo cách khác
+  }
+  return data;
+};
+
+const ArlamInfoforroom = async (room_id) => {
+  const { data, error } = await supabase
+    .from("schedule")
+    .select()
+    .eq("name", room_id)
+    .eq('note', 'FAlSE')
+    ;
   if (error) {
     return error;
   }
@@ -39,34 +53,34 @@ const getArlamInfo = async (room_id) => {
   }
   return data;
 };
-const getNumLightActive = async() => {
+const getNumLightActive = async () => {
   const { data, error } = await supabase
-  .from('device')
-  .select('*', { count: 'exact' })
-  .eq('status', 'ON')
-  .eq('note', 'light');
+    .from('device')
+    .select('*', { count: 'exact' })
+    .eq('status', 'ON')
+    .eq('note', 'light');
 
-if (error) {
-  console.error('Error fetching device count:', error);
-  return null;
-}
-return data;
+  if (error) {
+    console.error('Error fetching device count:', error);
+    return null;
+  }
+  return data;
 };
 
-const getNumFanActive = async() => {
+const getNumFanActive = async () => {
   const { data, error } = await supabase
-  .from('device')
-  .select('*', { count: 'exact' })
-  .eq('status', 'ON')
-  .eq('note', 'fan');
+    .from('device')
+    .select('*', { count: 'exact' })
+    .eq('status', 'ON')
+    .eq('note', 'fan');
 
-if (error) {
-  console.error('Error fetching device count:', error);
-  return null;
-}
+  if (error) {
+    console.error('Error fetching device count:', error);
+    return null;
+  }
 
-// Data will contain the count of devices where status is 'ON'
-return data;
+  // Data will contain the count of devices where status is 'ON'
+  return data;
 };
 
 const getRoomById = async (room_id) => {
@@ -133,4 +147,5 @@ module.exports = {
   getNumFanActive,
   ArlamInfo,
   ArlamInfoforroom,
+  getScheduledTasks
 };

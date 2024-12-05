@@ -1,3 +1,7 @@
+const cron = require('node-cron');
+const {
+  updateDeviceStatus
+} = require("../services/deviceService");
 const {
   getAllRoom,
   getRoomById,
@@ -8,6 +12,7 @@ const {
   getNumFanActive,
   ArlamInfo,
   ArlamInfoforroom,
+  getScheduledTasks
 } = require("../services/roomServices");
 
 const displayAllRooms = async (req, res) => {
@@ -21,8 +26,9 @@ const displayAllRoomsArlamforrom = async (req, res) => {
   return res.status(200).json({
     room: room_id,
     data: {
-      notice : list,
-  },});
+      notice: list,
+    },
+  });
   // return res.render('displayAllRooms.ejs', { listGarden: listGarden });
 };
 const displayAllRoomsArlam = async (req, res) => {
@@ -58,8 +64,48 @@ const viewFan = async (req, res) => {
   return res.status(200).json(numLight);
 }
 
-const getDeviceStatus = async () => {};
+const getDeviceStatus = async () => { };
 
+
+const startScheduler = async () => {
+  const tasks = await getScheduledTasks();
+
+  tasks.forEach(task => {
+    const scheduledTime = new Date(task.time);
+    const currentTime = new Date();
+
+    const timeUntilExecution = scheduledTime - currentTime - 10000;
+
+    if (timeUntilExecution > 0) {
+      console.log(`Sẽ thực hiện công việc cho ${task.name} sau ${timeUntilExecution / 1000} giây`);
+
+      setTimeout(() => {
+        executeScheduledTask(task);
+      }, timeUntilExecution);
+    } else {
+      console.log(`Thời gian đã qua cho công việc ${task.name}, không thực hiện.`);
+    }
+  });
+};
+
+// Hàm để kiểm tra dữ liệu mới
+const checkForNewTasks = async () => {
+  const newTasks = await getScheduledTasks();
+  // Cập nhật lại lịch trình nếu có nhiệm vụ mới
+  startScheduler(newTasks);
+};
+
+// Gọi hàm kiểm tra dữ liệu mới theo định kỳ
+setInterval(checkForNewTasks, 60000); // Kiểm tra mỗi phút
+
+// Định nghĩa hàm thực hiện công việc
+const executeScheduledTask = (task) => {
+  console.log(`Đang thực hiện công việc cho ${task.name} với thiết bị ${task.device} với trạng thái ${task.status}`);
+  updateDeviceStatus(task.name, task.device, task.status)
+};
+
+// Khởi động lịch
+startScheduler();
 module.exports = {
   displayAllRooms,
   viewRoom,
@@ -67,5 +113,6 @@ module.exports = {
   viewLight,
   viewFan,
   displayAllRoomsArlam,
-  displayAllRoomsArlamforrom
+  displayAllRoomsArlamforrom,
+  startScheduler
 };

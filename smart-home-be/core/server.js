@@ -5,7 +5,7 @@ require('./mqtt/sub');
 const cors = require('cors');
 const initWebRoutes = require('./routes/web');
 const supabase = require('./config/supabaseClient')
-
+const { startScheduler } = require('./controllers/roomController');
 const corsOptions = {
     origin: true,
     credentials: true, //access-control-allow-credentials:true
@@ -27,6 +27,7 @@ configViewEngine(app);
 
 initWebRoutes(app);
 // console.log(supabase)
+startScheduler(); // Gọi hàm khởi động lập lịch từ controller
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

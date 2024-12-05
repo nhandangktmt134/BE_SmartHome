@@ -1,7 +1,9 @@
 const cron = require('node-cron');
 const {
-  updateDeviceStatus
+  updateDeviceStatus,
 } = require("../services/deviceService");
+const { pubDeviceStatus } = require("../mqtt/pub");
+
 const {
   getAllRoom,
   getRoomById,
@@ -111,10 +113,12 @@ setInterval(checkForNewTasks, 60000); // Kiểm tra mỗi phút
 // Định nghĩa hàm thực hiện công việc
 const executeScheduledTask = (task) => {
   console.log(`Đang thực hiện công việc cho ${task.name} với thiết bị ${task.device} với trạng thái ${task.status}`);
+  pubDeviceStatus(task.name, task.device, task.status);
   updateDeviceStatus(task.name, task.device, task.status)
 };
 
 // Khởi động lịch
+
 module.exports = {
   displayAllRooms,
   viewRoom,

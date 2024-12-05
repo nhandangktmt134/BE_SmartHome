@@ -8,6 +8,7 @@ const {
   getNumFanActive,
   ArlamInfo,
   ArlamInfoforroom,
+  getActionArlam
 } = require("../services/roomServices");
 
 const displayAllRooms = async (req, res) => {
@@ -25,6 +26,15 @@ const displayAllRoomsArlamforrom = async (req, res) => {
   },});
   // return res.render('displayAllRooms.ejs', { listGarden: listGarden });
 };
+const viewgetArlam = async(req, res)=>{
+  const room_id = req.params.room_id;
+  const list = await getActionArlam(room_id);
+  return res.status(200).json({
+    room: room_id,
+    data: {
+      action : list,
+  },});
+}
 const displayAllRoomsArlam = async (req, res) => {
 
   const list = await ArlamInfo();
@@ -67,5 +77,6 @@ module.exports = {
   viewLight,
   viewFan,
   displayAllRoomsArlam,
-  displayAllRoomsArlamforrom
+  displayAllRoomsArlamforrom,
+  viewgetArlam
 };

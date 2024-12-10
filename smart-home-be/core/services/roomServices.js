@@ -19,13 +19,49 @@ const getScheduledTasks = async () => {
   const { data, error } = await supabase
     .from("schedule")
     .select("*")
-    .eq("status", 1); // Lọc theo trạng thái
+    .order("time", { ascending: true });
 
   if (error) {
     console.error('Error fetching scheduled tasks:', error);
-    return null; // Hoặc xử lý lỗi theo cách khác
+    return null;
   }
-  return data;
+
+  const currentTime = new Date();
+
+  const upcomingTasks = data.filter(task => {
+    const taskTime = new Date(task.time);
+    return taskTime > currentTime;
+  });
+
+  return upcomingTasks;
+};
+const deletePastTasks = async () => {
+  const currentTime = new Date();
+
+  const { data, error } = await supabase
+    .from("schedule")
+    .select("*");
+
+  if (error) {
+    console.error('Error fetching scheduled tasks:', error);
+    return null;
+  }
+
+  const pastTasks = data.filter(task => new Date(task.time) <= currentTime);
+
+  if (pastTasks.length > 0) {
+    const { error: deleteError } = await supabase
+      .from("schedule")
+      .delete()
+      .in("id", pastTasks.map(task => task.id));
+
+    if (deleteError) {
+      console.error('Error deleting past tasks:', deleteError);
+      return null;
+    }
+  }
+
+  return pastTasks.length;
 };
 
 const ArlamInfoforroom = async (room_id) => {
@@ -148,5 +184,6 @@ module.exports = {
   getNumFanActive,
   ArlamInfo,
   ArlamInfoforroom,
-  getScheduledTasks
+  getScheduledTasks,
+  deletePastTasks
 };

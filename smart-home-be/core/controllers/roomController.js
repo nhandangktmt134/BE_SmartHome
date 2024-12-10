@@ -14,7 +14,8 @@ const {
   getNumFanActive,
   ArlamInfo,
   ArlamInfoforroom,
-  getScheduledTasks
+  getScheduledTasks,
+  deletePastTasks,
 } = require("../services/roomServices");
 
 const displayAllRooms = async (req, res) => {
@@ -86,7 +87,7 @@ const startScheduler = async () => {
     const scheduledTime = new Date(task.time);
     const currentTime = new Date();
 
-    const timeUntilExecution = scheduledTime - currentTime - 10000;
+    const timeUntilExecution = scheduledTime - currentTime - 5000;
 
     if (timeUntilExecution > 0) {
       console.log(`Sẽ thực hiện công việc cho ${task.name} sau ${timeUntilExecution / 1000} giây`);
@@ -100,24 +101,21 @@ const startScheduler = async () => {
   });
 };
 
-// Hàm để kiểm tra dữ liệu mới
 const checkForNewTasks = async () => {
   const newTasks = await getScheduledTasks();
-  // Cập nhật lại lịch trình nếu có nhiệm vụ mới
   startScheduler(newTasks);
 };
 
-// Gọi hàm kiểm tra dữ liệu mới theo định kỳ
-setInterval(checkForNewTasks, 60000); // Kiểm tra mỗi phút
+setInterval(checkForNewTasks, 30000);
 
-// Định nghĩa hàm thực hiện công việc
 const executeScheduledTask = (task) => {
   console.log(`Đang thực hiện công việc cho ${task.name} với thiết bị ${task.device} với trạng thái ${task.status}`);
   pubDeviceStatus(task.name, task.device, task.status);
   updateDeviceStatus(task.name, task.device, task.status)
 };
-
-// Khởi động lịch
+setInterval(() => {
+  deletePastTasks();
+}, 10000);
 
 module.exports = {
   displayAllRooms,
